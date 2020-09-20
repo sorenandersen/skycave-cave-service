@@ -3,13 +3,15 @@ const Log = require('@dazn/lambda-powertools-logger')
 const handler = async (event, context) => {
   const position = event.pathParameters.position
 
-  Log.debug('handler_getRoom', { position })
+  Log.debug('handler_updateRoom ', { position })
 
   // TODO validate position
+  // TODO validate room
 
   // TODO responses
-  // 200 Room sucessfully retrieved
+  // 204 Room successfully updated
   // 400 Invalid request
+  // 403 User is not the room creator
   // 404 Room not found
 
   const mockRoom = {
@@ -21,8 +23,8 @@ const handler = async (event, context) => {
   }
 
   return {
-    statusCode: 200,
-    body: JSON.stringify(mockRoom),
+    statusCode: 204,
+    body: null,
   }
 }
 

@@ -22,7 +22,8 @@ const viaHttp = async (method, relPath, options) => {
   console.info(`invoking via HTTP ${method} ${url}`)
 
   try {
-    const headers = {}
+    const headers =
+      method === 'GET' ? {} : { 'content-type': 'application/json' }
     const data = getPathValue(options, 'body')
 
     const request = axios.request({
