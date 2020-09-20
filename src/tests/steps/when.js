@@ -9,8 +9,7 @@ const invoking_get_room = async (position) => {
       const event = { pathParameters: { position } }
       return await viaHandler('getRoom', event)
     case 'http':
-      // TODO
-      return await viaHttp('GET', '')
+      return await viaHttp('GET', '/room/(0,0,0)')
     default:
       throw new Error(`Unsupported mode: ${mode}`)
   }
@@ -22,8 +21,7 @@ const invoking_get_room_exits = async (position) => {
       const event = { pathParameters: { position } }
       return await viaHandler('getRoomExits', event)
     case 'http':
-      // TODO
-      return await viaHttp('GET', '')
+      return await viaHttp('GET', '/room/(0,0,0)/exits')
     default:
       throw new Error(`Unsupported mode: ${mode}`)
   }
