@@ -1,0 +1,28 @@
+{
+  "name": "skycave-cave-service",
+  "version": "0.1.0",
+  "description": "AWS serverless port of the SkyCave CaveService microservice for the AU MsDO exam project ",
+  "scripts": {
+    "sls": "serverless",
+    "test": "cross-env TEST_MODE=handler jest",
+    "acceptance": "sls export-env && cross-env TEST_MODE=http jest"
+  },
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "aws-sdk": "^2.755.0",
+    "axios": "^0.20.0",
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "jest": "^26.4.2",
+    "lodash": "^4.17.20",
+    "prettier": "^2.1.2",
+    "serverless": "^2.1.1",
+    "serverless-export-env": "^1.3.1",
+    "serverless-iam-roles-per-function": "^2.0.2"
+  },
+  "dependencies": {
+    "@dazn/lambda-powertools-logger": "^1.24.1"
+  }
+}

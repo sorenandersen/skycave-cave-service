@@ -1,0 +1,141 @@
+swagger​: ​'2.0'
+info​:
+  ​version​: ​1.1.0 
+  title​: ​CaveService
+  ​description​: ​|
+    API specification for the SkyCave CaveService.
+    Designed by Group Oscar.
+
+schemes​:
+  - ​http
+
+host​: ​'msdo-oscar.cloud:5555'
+basePath​: ​/cave
+
+paths​:
+  ​'/room/{position}'​:
+    ​get​:
+      ​summary​: ​Get a room
+      ​description​: ​Get a room at the given position. 
+      parameters​:
+        - ​name​: ​position
+          ​type​: ​string
+          ​description​: ​'Position of the room in the (x,y,z) format.' 
+          in​: ​path
+          ​required​: ​true
+      ​responses​:
+        '200'​:
+          ​description​: ​Room sucessfully retrieved
+          ​schema​:
+            ​$ref​: ​'#/definitions/RoomRecord'
+        ​'400'​:
+          ​description​: ​Invalid request
+        '404'​:
+          ​description​: ​Room not found 
+    post​:
+      ​summary​: ​Create a new room
+      ​description​: ​Create a new room at the given position. 
+      parameters​:
+        - ​name​: ​position
+          ​type​: ​string
+          ​description​: ​'Position of the room in the (x,y,z) format.' 
+          in​: ​path
+          ​required​: ​true
+        - ​name​: ​RoomRecord 
+          schema​:
+            ​$ref​: ​'#/definitions/RoomRecord' 
+            description​: ​The room to create
+            ​in​: ​body
+            ​required​: ​true
+      ​responses​: 
+        '201'​:
+          ​description​: ​Room successfully created 
+        '400'​:
+          ​description​: ​Invalid request 
+        '409'​:
+          ​description​: ​Room already exists
+    ​put​:
+      summary​: ​Update a room
+      ​description​: ​Update a new room at the given position.
+      ​parameters​:
+        - ​name​: ​position 
+          type​: ​string
+          ​description​: ​'Position of the room in the (x,y,z) format.'
+          ​in​: ​path
+          ​required​: ​true
+        - ​name​: ​RoomRecord 
+          schema​:
+          ​$ref​: ​'#/definitions/UpdateRoomRecord' 
+          description​: ​The room to update
+          ​in​: ​body
+          ​required​: ​true
+      ​responses​:
+        ​'204'​:
+          ​description​: ​Room successfully updated 
+        '400'​:
+          ​description​: ​Invalid request 
+        '403'​:
+          ​description​: ​User is not the room creator 
+        '404'​:
+          ​description​: ​Room not found 
+
+  '/room/{position}/exits'​:
+    ​get​:
+  ​   summary​: ​Get exits for room
+      ​description​: ​Get exits from room at the given position. 
+      parameters​:
+        - ​name​: ​position
+          ​type​: ​string
+          ​description​: ​'Position of the room in the (x,y,z) format.'
+          in​: ​path
+          ​required​: ​true
+      ​responses​:
+        ​'200'​:
+          ​description​: ​Exists
+          ​schema​:
+            ​$ref​: ​'#/definitions/Exits'
+        ​'400'​:
+          ​description​: ​Invalid request
+        ​'404'​:
+          ​description​: ​Room not found
+
+definitions​:
+  ​RoomRecord​:
+    ​type​: ​object
+      ​properties​:
+        ​id​:
+          ​type​: ​string
+          ​format​: ​'(x,y,z)' 
+          example​: ​'(0,0,0)'
+        ​creationTimeISO8601​:
+          ​type​: ​string
+          ​format​: ​date-time
+          ​example​: ​'2020-04-13T15:04:43.084+02:00'
+        ​description​:
+          ​type​: ​string
+          ​example​: ​'You are standing at the end of a road before a small brick building.'
+        ​creatorId​:
+          ​type​: ​string
+          ​example​: ​'0'
+  ​UpdateRoomRecord​:
+    ​type​: ​object
+      ​properties​:
+        ​description​:
+          ​type​: ​string
+          example​: ​'You are standing at the end of a road before a small brick building.'
+        ​creatorId​:
+          ​type​: ​string
+          ​example​: ​'0'
+
+​Exits​:
+​  type​: ​array 
+  items​:
+  ​description​: ​Direction 
+  type​: ​string
+  ​enum​:
+    - ​NORTH
+    - ​SOUTH
+    - ​EAST
+    - ​WEST
+    - ​UP
+    - ​DOWN

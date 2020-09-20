@@ -1,0 +1,41 @@
+service: skycave-cave-service
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 128
+  stage: ${opt:stage, 'dev'}
+  httpApi:
+    payload: "2.0"
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    LOG_LEVEL: ${self:custom.logLevel.${self:provider.stage}, self:custom.logLevel.default}
+    ROOT_URL: # Purpose: Exported to .env and used in acceptance test
+      Fn::Join:
+        - ""
+        - - https://
+          - !Ref HttpApi
+          - .execute-api.${self:provider.region}.amazonaws.com
+
+plugins:
+  - serverless-export-env
+  - serverless-iam-roles-per-function
+
+custom:
+  logLevel:
+    prod: WARN
+    default: DEBUG
+
+functions:
+  getRoom:
+    handler: src/functions/getRoom.handler
+    events:
+      - httpApi:
+          path: /room/{position}
+          method: GET
+  getRoomExits:
+    handler: src/functions/getRoomExits.handler
+    events:
+      - httpApi:
+          path: /room/{position}/exits
+          method: GET
