@@ -1,6 +1,6 @@
 const getPathValue = require('lodash/get')
 const axios = require('axios')
-const APP_ROOT = '../../'
+const APP_ROOT = '../'
 
 const viaHandler = async (functionName, event) => {
   const handler = require(`${APP_ROOT}functions/${functionName}`).handler
@@ -19,11 +19,11 @@ const viaHandler = async (functionName, event) => {
 
 const viaHttp = async (method, relPath, options) => {
   const url = `${process.env.ROOT_URL}/${relPath}`
-  console.info(`invoking via HTTP ${method} ${url}`)
+  console.info(`Invoking via HTTP ${method} ${url}`)
 
   try {
     const headers =
-      method === 'GET' ? {} : { 'content-type': 'application/json' }
+      method === 'GET' ? {} : { 'Content-Type': 'application/json' }
     const data = getPathValue(options, 'body')
 
     const request = axios.request({
