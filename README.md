@@ -66,3 +66,11 @@ npm run test
 ```
 npm run acceptance
 ```
+
+## Invoke with curl
+
+```
+curl "https://shsme8hvhb.execute-api.us-east-1.amazonaws.com/room/(0,0,0)"
+
+curl -X POST -H "Content-Type: application/json" -d '{"description":"TEST","creatorId":"0"}' "https://shsme8hvhb.execute-api.us-east-1.amazonaws.com/room/(0,0,1)" -i
+```

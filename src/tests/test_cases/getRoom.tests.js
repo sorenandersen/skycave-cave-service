@@ -3,6 +3,13 @@ const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
 console.log = jest.fn()
 
+beforeAll(() => {
+  // TODO load test data
+})
+afterAll(() => {
+  // TODO delete test data
+})
+
 describe(`When invoking the GET /room endpoint`, () => {
   it(`Should return a room`, async () => {
     const position = '(0,0,0)'

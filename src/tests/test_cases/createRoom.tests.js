@@ -1,14 +1,11 @@
 require('../init')
 const chance = require('chance').Chance()
-const moment = require('moment-timezone')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
 console.log = jest.fn()
 
-const chanceIntegerOptions = { min: -999, max: 999 }
-const denmarkTimezone = 'Europe/Copenhagen'
-
 generateRandomPosition = () => {
+  const chanceIntegerOptions = { min: -999, max: 999 }
   const x = chance.integer(chanceIntegerOptions)
   const y = chance.integer(chanceIntegerOptions)
   const z = chance.integer(chanceIntegerOptions)
@@ -16,10 +13,6 @@ generateRandomPosition = () => {
 }
 
 const validRoom = {
-  creationTimeISO8601: moment
-    .tz(Date.now(), 'UTC')
-    .tz(denmarkTimezone)
-    .format(), // e.g. '2020-09-21T20:15:43+02:00',
   description: `New room crated by test`,
   creatorId: '0',
 }

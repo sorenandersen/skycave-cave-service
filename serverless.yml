@@ -33,21 +33,54 @@ functions:
       - httpApi:
           path: /room/{position}
           method: GET
+    environment:
+      TABLE_NAME: !Ref SkyCaveRoomsTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:GetItem
+        Resource: !GetAtt SkyCaveRoomsTable.Arn
+
   createRoom:
     handler: src/functions/createRoom.handler
     events:
       - httpApi:
           path: /room/{position}
           method: POST
+    environment:
+      TABLE_NAME: !Ref SkyCaveRoomsTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt SkyCaveRoomsTable.Arn
+
   updateRoom:
     handler: src/functions/updateRoom.handler
     events:
       - httpApi:
           path: /room/{position}
           method: PUT
+
   getRoomExits:
     handler: src/functions/getRoomExits.handler
     events:
       - httpApi:
           path: /room/{position}/exits
           method: GET
+
+resources:
+  Resources:
+    SkyCaveRoomsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
+  Outputs:
+    SkyCaveRoomsTableName:
+      Value: !Ref SkyCaveRoomsTable
+      Description: "DynamoDB table"

@@ -1,28 +1,41 @@
+const DocumentClient = require('aws-sdk/clients/dynamodb').DocumentClient
+const dynamodb = new DocumentClient()
 const Log = require('@dazn/lambda-powertools-logger')
+const { isValidPositionFormat } = require('../lib/validators')
+
+// Responses:
+// 200 Room sucessfully retrieved
+// 400 Invalid request
+// 404 Room not found
 
 const handler = async (event, context) => {
   const position = event.pathParameters.position
 
-  Log.debug('handler_getRoom', { position })
+  //Log.debug('handler_getRoom', { position })
 
-  // TODO validate position
+  // Validate position
+  if (!isValidPositionFormat(position)) {
+    return {
+      statusCode: 400,
+    }
+  }
 
-  // TODO responses
-  // 200 Room sucessfully retrieved
-  // 400 Invalid request
-  // 404 Room not found
+  const result = await dynamodb
+    .get({
+      TableName: process.env.TABLE_NAME,
+      Key: { id: position },
+    })
+    .promise()
 
-  const mockRoom = {
-    id: position,
-    creationTimeISO8601: '2020-04-13T15:04:43.084+02:00',
-    description:
-      'You are standing at the end of a road before a small brick building.',
-    creatorId: '0',
+  if (!result.Item) {
+    return {
+      statusCode: 404,
+    }
   }
 
   return {
     statusCode: 200,
-    body: JSON.stringify(mockRoom),
+    body: JSON.stringify(result.Item),
   }
 }
 
