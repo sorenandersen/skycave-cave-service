@@ -3,6 +3,15 @@ const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
 console.log = jest.fn()
 
+// TEMP links usable for testing
+// ----------------------
+// Jest Setup and Teardown docs: before/after Each/All
+// https://jestjs.io/docs/en/setup-teardown
+//
+// Chance
+// Chance is a minimalist generator of random [1] strings, numbers, etc. to help reduce some monotony particularly while writing automated tests or anywhere else you need anything random.
+// https://chancejs.com/basics/integer.html
+
 beforeAll(() => {
   // TODO load test data
 })
