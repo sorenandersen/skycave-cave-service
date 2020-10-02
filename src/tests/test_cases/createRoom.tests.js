@@ -17,14 +17,14 @@ const validRoom = {
   creatorId: '0',
 }
 
-describe(`When invoking the POST /room endpoint, with a valid room record`, () => {
+describe.skip(`When invoking the POST /room endpoint, with a valid room record`, () => {
   test(`It should create a room`, async () => {
     const response = await invokeCreateRoom(generateRandomPosition(), validRoom)
     expect(response.statusCode).toEqual(201)
   })
 })
 
-describe(`When invoking the POST /room endpoint, with invalid data`, () => {
+describe.skip(`When invoking the POST /room endpoint, with invalid data`, () => {
   // TODO
 
   test(`Invalid position format should not create, but return 400 (1)`, async () => {
@@ -68,7 +68,7 @@ describe(`When invoking the POST /room endpoint, with invalid data`, () => {
   })
 })
 
-describe(`When invoking the POST /room endpoint, for a room position that already exists`, () => {
+describe.skip(`When invoking the POST /room endpoint, for a room position that already exists`, () => {
   test(`It should return 409`, async () => {
     const position = '(0,0,0)'
     const response = await invokeCreateRoom(position, validRoom)

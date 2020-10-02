@@ -3,7 +3,7 @@ const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
 console.log = jest.fn()
 
-describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
+describe.skip(`When invoking the GET /room/{position}/exits endpoint`, () => {
   it(`Should return exits for the room`, async () => {
     const position = '(0,0,0)'
     const response = await invokeGetRoomExits(position)

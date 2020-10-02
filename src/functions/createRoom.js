@@ -31,8 +31,7 @@ const handler = async (event, context) => {
     .put({
       TableName: process.env.TABLE_NAME,
       Item: {
-        id: position, // TODO determine if UUID id property is needed
-        position, // TODO redundant
+        id: position,
         description: room.description,
         creatorId: room.creatorId,
         creationTimeISO8601: new Date().toISOString(),

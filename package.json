@@ -4,7 +4,7 @@
   "description": "AWS serverless port of the SkyCave CaveService microservice for the AU MsDO exam project ",
   "scripts": {
     "sls": "serverless",
-    "test": "cross-env TEST_MODE=handler jest",
+    "test": "sls export-env && cross-env TEST_MODE=handler jest",
     "acceptance": "sls export-env && cross-env TEST_MODE=http jest"
   },
   "keywords": [],

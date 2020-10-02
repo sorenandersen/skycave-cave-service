@@ -9,14 +9,14 @@ const validRoom = {
   creatorId: '0',
 }
 
-describe(`When invoking the PUT /room endpoint, with a valid room record`, () => {
+describe.skip(`When invoking the PUT /room endpoint, with a valid room record`, () => {
   test(`Room should be successfully updated`, async () => {
     const response = await invokeUpdateRoom(validPosition, validRoom)
     expect(response.statusCode).toEqual(204)
   })
 })
 
-describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
+describe.skip(`When invoking the PUT /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not update, but return 400 (1)`, async () => {
     const position = null
     const response = await invokeUpdateRoom(position, validRoom)
@@ -52,7 +52,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
   })
 })
 
-describe(`When invoking the PUT /room endpoint, for a room created by somebody else`, () => {
+describe.skip(`When invoking the PUT /room endpoint, for a room created by somebody else`, () => {
   test(`It should not update the room, but return 403`, async () => {
     const room = {
       description: 'Updated room description',
@@ -63,7 +63,7 @@ describe(`When invoking the PUT /room endpoint, for a room created by somebody e
   })
 })
 
-describe(`When invoking the PUT /room endpoint, for a room position that does not exist`, () => {
+describe.skip(`When invoking the PUT /room endpoint, for a room position that does not exist`, () => {
   test(`It should return 404`, async () => {
     const position = '(42,42,42)'
     const response = await invokeUpdateRoom(position, validRoom)

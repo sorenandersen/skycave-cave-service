@@ -1,7 +1,7 @@
 require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
-console.log = jest.fn()
+//console.log = jest.fn()
 
 // TEMP links usable for testing
 // ----------------------
@@ -12,16 +12,16 @@ console.log = jest.fn()
 // Chance is a minimalist generator of random [1] strings, numbers, etc. to help reduce some monotony particularly while writing automated tests or anywhere else you need anything random.
 // https://chancejs.com/basics/integer.html
 
-beforeAll(() => {
-  // TODO load test data
-})
-afterAll(() => {
-  // TODO delete test data
-})
+//beforeAll(() => {
+// TODO load test data
+//})
+//afterAll(() => {
+// TODO delete test data
+//})
 
 describe(`When invoking the GET /room endpoint`, () => {
-  it(`Should return a room`, async () => {
-    const position = '(0,0,0)'
+  test.only(`It should return a room`, async () => {
+    const position = '(100,100,100)'
     const response = await invokeGetRoom(position)
     expect(response.statusCode).toEqual(200)
     expect(response.body).toHaveProperty('id')
