@@ -18,7 +18,7 @@ const viaHandler = async (functionName, event) => {
 }
 
 const viaHttp = async (method, relPath, options) => {
-  const url = `${process.env.ROOT_URL}/${relPath}`
+  const url = `${process.env.ROOT_URL}${relPath}`
   console.info(`Invoking via HTTP ${method} ${url}`)
 
   try {
@@ -41,9 +41,9 @@ const viaHttp = async (method, relPath, options) => {
       body: response.data,
     }
   } catch (err) {
-    if (err.status) {
+    if (err.response) {
       return {
-        statusCode: err.status,
+        statusCode: err.response.status,
         headers: err.response.headers,
       }
     } else {

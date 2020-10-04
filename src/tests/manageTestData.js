@@ -1,15 +1,22 @@
 const AWS = require('aws-sdk')
-const { forOwn } = require('lodash')
 AWS.config.region = 'us-east-1'
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 require('dotenv').config()
 
-const rooms = [
+const testRooms = [
+  // GET tests
   {
     id: '(100,100,100)',
-    creationTimeISO8601: new Date().toISOString(),
-    creatorId: 100,
-    description: 'TEST record',
+    creationTimeISO8601: '2020-10-02T18:37:30.771Z',
+    creatorId: '100',
+    description: `Room created by test`,
+  },
+  // POSTS tests
+  {
+    id: '(100,200,100)',
+    creationTimeISO8601: '2020-10-02T18:37:30.771Z',
+    creatorId: '100',
+    description: `Room created by test`,
   },
 ]
 
@@ -20,7 +27,7 @@ const requestItems = (requests) => ({
 })
 
 const insertTestData = () => {
-  const putRequests = rooms.map((x) => ({
+  const putRequests = testRooms.map((x) => ({
     PutRequest: {
       Item: x,
     },
@@ -34,7 +41,7 @@ const insertTestData = () => {
 }
 
 const deleteTestData = () => {
-  const deleteRequests = rooms.map((x) => ({
+  const deleteRequests = testRooms.map((x) => ({
     DeleteRequest: {
       Key: { id: x.id },
     },
@@ -48,6 +55,7 @@ const deleteTestData = () => {
 }
 
 module.exports = {
+  testRooms,
   insertTestData,
   deleteTestData,
 }

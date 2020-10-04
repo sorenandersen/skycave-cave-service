@@ -9,7 +9,7 @@ provider:
     payload: "2.0"
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    AWS_REGION: ${self:provider.region}
+    #AWS_REGION: ${self:provider.region}
     LOG_LEVEL: ${self:custom.logLevel.${self:provider.stage}, self:custom.logLevel.default}
     ROOT_URL: # Purpose: Exported to .env and used in acceptance test
       Fn::Join:

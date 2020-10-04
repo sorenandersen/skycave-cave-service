@@ -3,6 +3,11 @@ const dynamodb = new DocumentClient()
 const Log = require('@dazn/lambda-powertools-logger')
 const { isValidPositionFormat } = require('../lib/validators')
 
+// Responses
+// 201 Room successfully created
+// 400 Invalid request
+// 409 Room already exists
+
 const handler = async (event, context) => {
   const position = event.pathParameters.position
   const room = JSON.parse(event.body)
@@ -22,22 +27,37 @@ const handler = async (event, context) => {
     }
   }
 
-  // TODO responses
-  // 201 Room successfully created
-  // 400 Invalid request
-  // 409 Room already exists
+  try {
+    await dynamodb
+      .put({
+        TableName: process.env.TABLE_NAME,
+        Item: {
+          id: position,
+          description: room.description,
+          creatorId: room.creatorId,
+          creationTimeISO8601: new Date().toISOString(),
+        },
+      })
+      .promise()
 
-  await dynamodb
-    .put({
-      TableName: process.env.TABLE_NAME,
-      Item: {
-        id: position,
-        description: room.description,
-        creatorId: room.creatorId,
-        creationTimeISO8601: new Date().toISOString(),
-      },
-    })
-    .promise()
+    // // TODO finish ConditionExpression
+    // await dynamodb
+    //   .put({
+    //     TableName: process.env.TABLE_NAME,
+    //     Item: {
+    //       id: position,
+    //       description: room.description,
+    //       creatorId: room.creatorId,
+    //       creationTimeISO8601: new Date().toISOString(),
+    //     },
+    //     ConditionExpression: 'attribute_not_exists(id)'
+    //   })
+    //   .promise()
+  } catch (error) {
+    // TODO
+    // On duplicate position, return status code 409:
+    // 409 Room already exists
+  }
 
   return {
     statusCode: 201,

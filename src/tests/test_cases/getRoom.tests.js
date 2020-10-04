@@ -1,35 +1,46 @@
 require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
-//console.log = jest.fn()
-
-// TEMP links usable for testing
-// ----------------------
-// Jest Setup and Teardown docs: before/after Each/All
-// https://jestjs.io/docs/en/setup-teardown
-//
-// Chance
-// Chance is a minimalist generator of random [1] strings, numbers, etc. to help reduce some monotony particularly while writing automated tests or anywhere else you need anything random.
-// https://chancejs.com/basics/integer.html
-
-//beforeAll(() => {
-// TODO load test data
-//})
-//afterAll(() => {
-// TODO delete test data
-//})
+const { testRooms } = require('../manageTestData')
+console.log = jest.fn()
 
 describe(`When invoking the GET /room endpoint`, () => {
-  test.only(`It should return a room`, async () => {
-    const position = '(100,100,100)'
+  test(`A valid position of an existing room should return the room`, async () => {
+    // Arrange
+    const testRoom = testRooms[0]
+    const position = testRoom.id
+    // Act
     const response = await invokeGetRoom(position)
+    // Assert
     expect(response.statusCode).toEqual(200)
-    expect(response.body).toHaveProperty('id')
+    expect(response.body.id).toEqual(testRoom.id)
+    expect(response.body.creationTimeISO8601).toEqual(
+      testRoom.creationTimeISO8601,
+    )
+    expect(response.body.creatorId).toEqual(testRoom.creatorId)
+    expect(response.body.description).toEqual(testRoom.description)
+  })
+
+  test(`A valid position of a non-existing room should return 404`, async () => {
+    // Arrange
+    const position = '(11111,22222,33333)'
+    // Act
+    const response = await invokeGetRoom(position)
+    // Assert
+    expect(response.statusCode).toEqual(404)
+  })
+
+  test(`An invalid position should return 400`, async () => {
+    // Arrange
+    const position = '(11111,22222,c)'
+    // Act
+    const response = await invokeGetRoom(position)
+    // Assert
+    expect(response.statusCode).toEqual(400)
   })
 })
 
-// TODO more tests
-
+// Helper function that invokes the GET room function handler programatically (integration test) or via HTTP (acceptance/e2e test)
 const invokeGetRoom = async (position) => {
   switch (TEST_MODE) {
     case 'handler':
