@@ -2,8 +2,8 @@ require('../init')
 const chance = require('chance').Chance()
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
-const { testRooms } = require('../manageTestData')
-console.log = jest.fn()
+const { testRoomsCreatedByTests } = require('../manageTestData')
+//console.log = jest.fn()
 
 // TEMP links usable for testing
 // ----------------------
@@ -20,21 +20,20 @@ console.log = jest.fn()
 //afterAll(() => {
 // TODO delete test data
 //})
-
-generateRandomPosition = () => {
-  const chanceIntegerOptions = { min: -999, max: 999 }
-  const x = chance.integer(chanceIntegerOptions)
-  const y = chance.integer(chanceIntegerOptions)
-  const z = chance.integer(chanceIntegerOptions)
-  return `(${x},${y},${z})`
-}
+// generateRandomPosition = () => {
+//   const chanceIntegerOptions = { min: -999, max: 999 }
+//   const x = chance.integer(chanceIntegerOptions)
+//   const y = chance.integer(chanceIntegerOptions)
+//   const z = chance.integer(chanceIntegerOptions)
+//   return `(${x},${y},${z})`
+// }
 
 // Test create happy path
 // *************************************************
-describe(`When invoking the POST /room endpoint, with a valid room record`, () => {
+describe.skip(`When invoking the POST /room endpoint, with a valid room record`, () => {
   test(`It should create a room`, async () => {
     // Arrange
-    const testRoom = testRooms[1]
+    const testRoom = testRoomsCreatedByTests[0]
     const position = testRoom.id
     // Act
     const response = await invokeCreateRoom(position, testRoom)
@@ -45,11 +44,11 @@ describe(`When invoking the POST /room endpoint, with a valid room record`, () =
 
 // Test create, with invalid or missing data
 // *************************************************
-describe(`When invoking the POST /room endpoint, with invalid data`, () => {
+describe.skip(`When invoking the POST /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not create, but return 400 (1)`, async () => {
     // Arrange
     const position = null
-    const testRoom = testRooms[1]
+    const testRoom = testRoomsCreatedByTests[0]
     // Act
     const response = await invokeCreateRoom(position, testRoom)
     // Assert
@@ -59,7 +58,7 @@ describe(`When invoking the POST /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not create, but return 400 (2)`, async () => {
     // Arrange
     const position = ''
-    const testRoom = testRooms[1]
+    const testRoom = testRoomsCreatedByTests[0]
     // Act
     const response = await invokeCreateRoom(position, testRoom)
     // Assert
@@ -69,7 +68,7 @@ describe(`When invoking the POST /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not create, but return 400 (3)`, async () => {
     // Arrange
     const position = '(0,0,)'
-    const testRoom = testRooms[1]
+    const testRoom = testRoomsCreatedByTests[0]
     // Act
     const response = await invokeCreateRoom(position, testRoom)
     // Assert
@@ -78,7 +77,7 @@ describe(`When invoking the POST /room endpoint, with invalid data`, () => {
 
   test(`Missing required field 'creatorId' should not create, but return 400`, async () => {
     // Arrange
-    const testRoom = testRooms[1]
+    const testRoom = testRoomsCreatedByTests[0]
     const position = testRoom.id
     const invalidRoom = {
       description: `New room created by test`,
@@ -91,7 +90,7 @@ describe(`When invoking the POST /room endpoint, with invalid data`, () => {
 
   test(`Missing required field 'description' should not create, but return 400`, async () => {
     // Arrange
-    const testRoom = testRooms[1]
+    const testRoom = testRoomsCreatedByTests[0]
     const position = testRoom.id
     const invalidRoom = {
       creatorId: '100',
@@ -106,13 +105,9 @@ describe(`When invoking the POST /room endpoint, with invalid data`, () => {
 // Test create, with duplicate position
 // *************************************************
 describe.skip(`When invoking the POST /room endpoint, for a room position that already exists`, () => {
-  // ***
-  // TODO
-  // ***
-
   test(`It should return 409`, async () => {
-    // Arrange
-    const testRoom = testRooms[1]
+    // Arrange: Attempt to create the same room as done previously in tests (see statusCode 201)
+    const testRoom = testRoomsCreatedByTests[0]
     const position = testRoom.id
     // Act
     const response = await invokeCreateRoom(position, testRoom)

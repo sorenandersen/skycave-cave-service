@@ -12,7 +12,7 @@ const handler = async (event, context) => {
   const position = event.pathParameters.position
   const room = JSON.parse(event.body)
 
-  //Log.debug('handler_createRoom', { position, room })
+  Log.debug('handler_createRoom', { position, room })
 
   // Validate position
   if (!isValidPositionFormat(position)) {
@@ -20,47 +20,45 @@ const handler = async (event, context) => {
       statusCode: 400,
     }
   }
-  // Validate room
+  // Validate room properties
   if (!room.description || !room.creatorId) {
     return {
       statusCode: 400,
     }
   }
 
+  const newRoom = {
+    id: position,
+    description: room.description,
+    creatorId: room.creatorId,
+    creationTimeISO8601: new Date().toISOString(),
+  }
+
   try {
     await dynamodb
       .put({
         TableName: process.env.TABLE_NAME,
-        Item: {
-          id: position,
-          description: room.description,
-          creatorId: room.creatorId,
-          creationTimeISO8601: new Date().toISOString(),
-        },
+        Item: newRoom,
+        ConditionExpression: 'attribute_not_exists(id)',
       })
       .promise()
 
-    // // TODO finish ConditionExpression
-    // await dynamodb
-    //   .put({
-    //     TableName: process.env.TABLE_NAME,
-    //     Item: {
-    //       id: position,
-    //       description: room.description,
-    //       creatorId: room.creatorId,
-    //       creationTimeISO8601: new Date().toISOString(),
-    //     },
-    //     ConditionExpression: 'attribute_not_exists(id)'
-    //   })
-    //   .promise()
+    return {
+      statusCode: 201,
+    }
   } catch (error) {
-    // TODO
-    // On duplicate position, return status code 409:
-    // 409 Room already exists
-  }
+    // Handle attempt to create room with position that already exists
+    if (error.code === 'ConditionalCheckFailedException') {
+      return {
+        statusCode: 409,
+      }
+    }
 
-  return {
-    statusCode: 201,
+    // Generic error
+    Log.error('dynamodb.put', { newRoom }, error)
+    return {
+      statusCode: 500,
+    }
   }
 }
 

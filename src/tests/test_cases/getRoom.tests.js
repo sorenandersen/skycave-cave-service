@@ -1,13 +1,13 @@
 require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
-const { testRooms } = require('../manageTestData')
+const { testRoomsPreCreated } = require('../manageTestData')
 console.log = jest.fn()
 
-describe(`When invoking the GET /room endpoint`, () => {
+describe.skip(`When invoking the GET /room endpoint`, () => {
   test(`A valid position of an existing room should return the room`, async () => {
     // Arrange
-    const testRoom = testRooms[0]
+    const testRoom = testRoomsPreCreated[0]
     const position = testRoom.id
     // Act
     const response = await invokeGetRoom(position)
