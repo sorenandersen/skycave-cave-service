@@ -1,7 +1,8 @@
 require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
-console.log = jest.fn()
+const { testRoomsPreCreated } = require('../manageTestData')
+//console.log = jest.fn()
 
 const validPosition = '(0,0,0)'
 const validRoom = {
@@ -9,68 +10,121 @@ const validRoom = {
   creatorId: '0',
 }
 
-describe.skip(`When invoking the PUT /room endpoint, with a valid room record`, () => {
+// Test happy path
+// *************************************************
+describe(`When invoking the PUT /room endpoint, with a valid room record`, () => {
   test(`Room should be successfully updated`, async () => {
-    const response = await invokeUpdateRoom(validPosition, validRoom)
+    // Arrange
+    const testRoom = testRoomsPreCreated[0]
+    const position = testRoom.id
+    const updatedRoom = {
+      creatorId: testRoom.creatorId,
+      description: 'Updated room description',
+    }
+    // Act
+    const response = await invokeUpdateRoom(position, updatedRoom)
+    // Assert
     expect(response.statusCode).toEqual(204)
   })
 })
 
-describe.skip(`When invoking the PUT /room endpoint, with invalid data`, () => {
+// Test with invalid or missing data
+// *************************************************
+describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not update, but return 400 (1)`, async () => {
+    // Arrange
     const position = null
-    const response = await invokeUpdateRoom(position, validRoom)
+    const testRoom = testRoomsPreCreated[0]
+    // Act
+    const response = await invokeUpdateRoom(position, testRoom)
+    // Assert
     expect(response.statusCode).toEqual(400)
   })
 
   test(`Invalid position format should not update, but return 400 (2)`, async () => {
+    // Arrange
     const position = ''
-    const response = await invokeUpdateRoom(position, validRoom)
+    const testRoom = testRoomsPreCreated[0]
+    // Act
+    const response = await invokeUpdateRoom(position, testRoom)
+    // Assert
     expect(response.statusCode).toEqual(400)
   })
 
   test(`Invalid position format should not update, but return 400 (3)`, async () => {
+    // Arrange
     const position = '(0,0,)'
-    const response = await invokeUpdateRoom(position, validRoom)
-    expect(response.statusCode).toEqual(400)
-  })
-
-  test(`Missing required field 'description' should not update, but return 400`, async () => {
-    const invalidRoom = {
-      creatorId: '0',
-    }
-    const response = await invokeUpdateRoom(validPosition, invalidRoom)
+    const testRoom = testRoomsPreCreated[0]
+    // Act
+    const response = await invokeUpdateRoom(position, testRoom)
+    // Assert
     expect(response.statusCode).toEqual(400)
   })
 
   test(`Missing required field 'creatorId' should not update, but return 400`, async () => {
+    // Arrange
+    const testRoom = testRoomsPreCreated[0]
+    const position = testRoom.id
     const invalidRoom = {
       description: 'Updated room description',
     }
-    const response = await invokeUpdateRoom(validPosition, invalidRoom)
+    // Act
+    const response = await invokeUpdateRoom(position, invalidRoom)
+    // Assert
+    expect(response.statusCode).toEqual(400)
+  })
+
+  test(`Missing required field 'description' should not update, but return 400`, async () => {
+    // Arrange
+    const testRoom = testRoomsPreCreated[0]
+    const position = testRoom.id
+    const invalidRoom = {
+      creatorId: '100',
+    }
+    // Act
+    const response = await invokeUpdateRoom(position, invalidRoom)
+    // Assert
     expect(response.statusCode).toEqual(400)
   })
 })
 
-describe.skip(`When invoking the PUT /room endpoint, for a room created by somebody else`, () => {
+// Test with invalid room creator
+// *************************************************
+describe(`When invoking the PUT /room endpoint, for a room created by somebody else`, () => {
   test(`It should not update the room, but return 403`, async () => {
-    const room = {
+    // Arrange
+    const testRoom = testRoomsPreCreated[0]
+    const position = testRoom.id
+    const updatedRoom = {
+      creatorId: '4324231423412',
       description: 'Updated room description',
-      creatorId: '1',
     }
-    const response = await invokeUpdateRoom(validPosition, room)
+    // Act
+    const response = await invokeUpdateRoom(position, updatedRoom)
+    // Assert
     expect(response.statusCode).toEqual(403)
   })
 })
 
-describe.skip(`When invoking the PUT /room endpoint, for a room position that does not exist`, () => {
+// Test with non-existing position
+// *************************************************
+describe(`When invoking the PUT /room endpoint, for a room position that does not exist`, () => {
   test(`It should return 404`, async () => {
-    const position = '(42,42,42)'
-    const response = await invokeUpdateRoom(position, validRoom)
+    // Arrange
+    const testRoom = testRoomsPreCreated[0]
+    const position = '(4324231423412,4324231423412,4324231423412)'
+    const updatedRoom = {
+      creatorId: testRoom.creatorId,
+      description: 'Updated room description',
+    }
+    // Act
+    const response = await invokeUpdateRoom(position, updatedRoom)
+    // Assert
     expect(response.statusCode).toEqual(404)
   })
 })
 
+// Helper function that invokes the PUT room function handler programatically (integration test) or via HTTP (acceptance/e2e test)
 const invokeUpdateRoom = async (position, room) => {
   const body = JSON.stringify(room)
   switch (TEST_MODE) {

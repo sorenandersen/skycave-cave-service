@@ -11,8 +11,6 @@ const { isValidPositionFormat } = require('../lib/validators')
 const handler = async (event, context) => {
   const position = event.pathParameters.position
 
-  //Log.debug('handler_getRoom', { position })
-
   // Validate position
   if (!isValidPositionFormat(position)) {
     return {
@@ -20,14 +18,9 @@ const handler = async (event, context) => {
     }
   }
 
-  const result = await dynamodb
-    .get({
-      TableName: process.env.TABLE_NAME,
-      Key: { id: position },
-    })
-    .promise()
-
-  if (!result.Item) {
+  // Get room
+  const room = await getRoomById(position)
+  if (!room) {
     return {
       statusCode: 404,
     }
@@ -35,8 +28,28 @@ const handler = async (event, context) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(room),
   }
 }
 
-module.exports.handler = handler
+// Make the "get room" a utility function to be used both here, and before updating a room.
+const getRoomById = async (id) => {
+  try {
+    const result = await dynamodb
+      .get({
+        TableName: process.env.TABLE_NAME,
+        Key: { id },
+      })
+      .promise()
+
+    return result.Item
+  } catch (error) {
+    Log.error('dynamodb.get', { Key: { id } }, error)
+    throw error
+  }
+}
+
+module.exports = {
+  handler,
+  getRoomById,
+}

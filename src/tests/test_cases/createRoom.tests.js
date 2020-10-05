@@ -1,34 +1,10 @@
 require('../init')
-const chance = require('chance').Chance()
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
 const { testRoomsCreatedByTests } = require('../manageTestData')
-//console.log = jest.fn()
+console.log = jest.fn()
 
-// TEMP links usable for testing
-// ----------------------
-// Jest Setup and Teardown docs: before/after Each/All
-// https://jestjs.io/docs/en/setup-teardown
-//
-// Chance
-// Chance is a minimalist generator of random [1] strings, numbers, etc. to help reduce some monotony particularly while writing automated tests or anywhere else you need anything random.
-// https://chancejs.com/basics/integer.html
-
-//beforeAll(() => {
-// TODO load test data
-//})
-//afterAll(() => {
-// TODO delete test data
-//})
-// generateRandomPosition = () => {
-//   const chanceIntegerOptions = { min: -999, max: 999 }
-//   const x = chance.integer(chanceIntegerOptions)
-//   const y = chance.integer(chanceIntegerOptions)
-//   const z = chance.integer(chanceIntegerOptions)
-//   return `(${x},${y},${z})`
-// }
-
-// Test create happy path
+// Test happy path
 // *************************************************
 describe.skip(`When invoking the POST /room endpoint, with a valid room record`, () => {
   test(`It should create a room`, async () => {
@@ -42,7 +18,7 @@ describe.skip(`When invoking the POST /room endpoint, with a valid room record`,
   })
 })
 
-// Test create, with invalid or missing data
+// Test with invalid or missing data
 // *************************************************
 describe.skip(`When invoking the POST /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not create, but return 400 (1)`, async () => {
@@ -102,7 +78,7 @@ describe.skip(`When invoking the POST /room endpoint, with invalid data`, () => 
   })
 })
 
-// Test create, with duplicate position
+// Test with duplicate position
 // *************************************************
 describe.skip(`When invoking the POST /room endpoint, for a room position that already exists`, () => {
   test(`It should return 409`, async () => {
