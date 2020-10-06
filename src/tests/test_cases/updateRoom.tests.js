@@ -12,7 +12,7 @@ const validRoom = {
 
 // Test happy path
 // *************************************************
-describe(`When invoking the PUT /room endpoint, with a valid room record`, () => {
+describe.skip(`When invoking the PUT /room endpoint, with a valid room record`, () => {
   test(`Room should be successfully updated`, async () => {
     // Arrange
     const testRoom = testRoomsPreCreated[0]
@@ -30,7 +30,7 @@ describe(`When invoking the PUT /room endpoint, with a valid room record`, () =>
 
 // Test with invalid or missing data
 // *************************************************
-describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
+describe.skip(`When invoking the PUT /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not update, but return 400 (1)`, async () => {
     // Arrange
     const position = null
@@ -90,7 +90,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
 
 // Test with invalid room creator
 // *************************************************
-describe(`When invoking the PUT /room endpoint, for a room created by somebody else`, () => {
+describe.skip(`When invoking the PUT /room endpoint, for a room created by somebody else`, () => {
   test(`It should not update the room, but return 403`, async () => {
     // Arrange
     const testRoom = testRoomsPreCreated[0]
@@ -108,7 +108,7 @@ describe(`When invoking the PUT /room endpoint, for a room created by somebody e
 
 // Test with non-existing position
 // *************************************************
-describe(`When invoking the PUT /room endpoint, for a room position that does not exist`, () => {
+describe.skip(`When invoking the PUT /room endpoint, for a room position that does not exist`, () => {
   test(`It should return 404`, async () => {
     // Arrange
     const testRoom = testRoomsPreCreated[0]
