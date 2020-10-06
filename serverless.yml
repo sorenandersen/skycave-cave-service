@@ -75,6 +75,12 @@ functions:
       - httpApi:
           path: /room/{position}/exits
           method: GET
+    environment:
+      TABLE_NAME: !Ref SkyCaveRoomsTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:GetItem
+        Resource: !GetAtt SkyCaveRoomsTable.Arn
 
 resources:
   Resources:

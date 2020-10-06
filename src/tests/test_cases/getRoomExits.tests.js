@@ -1,16 +1,42 @@
 require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
+const { testRoomsPreCreated } = require('../manageTestData')
 console.log = jest.fn()
 
-describe.skip(`When invoking the GET /room/{position}/exits endpoint`, () => {
-  it(`Should return exits for the room`, async () => {
-    const position = '(0,0,0)'
+describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
+  test(`A valid position of an existing room should return exits for the room`, async () => {
+    // Arrange
+    // Arrange
+    const testRoom = testRoomsPreCreated[0]
+    const position = testRoom.id
+    // Act
     const response = await invokeGetRoomExits(position)
+    // Assert
     expect(response.statusCode).toEqual(200)
-    expect(response.body).toHaveLength(2)
-    expect(response.body).toContain('NORTH')
-    expect(response.body).toContain('WEST')
+
+    // TODO more asserts
+    // expect(response.body).toHaveLength(2)
+    // expect(response.body).toContain('NORTH')
+    // expect(response.body).toContain('WEST')
+  })
+
+  test(`A valid position of a non-existing room should return 404`, async () => {
+    // Arrange
+    const position = '(11111,22222,33333)'
+    // Act
+    const response = await invokeGetRoomExits(position)
+    // Assert
+    expect(response.statusCode).toEqual(404)
+  })
+
+  test(`An invalid position should return 400`, async () => {
+    // Arrange
+    const position = '(11111,22222,c)'
+    // Act
+    const response = await invokeGetRoomExits(position)
+    // Assert
+    expect(response.statusCode).toEqual(400)
   })
 })
 
