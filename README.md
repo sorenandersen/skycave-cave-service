@@ -70,7 +70,12 @@ npm run acceptance
 ## Invoke with curl
 
 ```
+# GET
 curl "https://shsme8hvhb.execute-api.us-east-1.amazonaws.com/room/(0,0,0)"
 
-curl -X POST -H "Content-Type: application/json" -d '{"description":"TEST","creatorId":"0"}' "https://shsme8hvhb.execute-api.us-east-1.amazonaws.com/room/(0,0,1)" -i
+# POST - create
+curl -X POST -H "Content-Type: application/json" -d '{"description":"TEST manual with curl","creatorId":"200"}' "https://shsme8hvhb.execute-api.us-east-1.amazonaws.com/room/(0,0,3)" -i
+
+# PUT - update
+curl -X PUT -H "Content-Type: application/json" -d '{"description":"TEST updated manually with curl","creatorId":"200"}' "https://shsme8hvhb.execute-api.us-east-1.amazonaws.com/room/(0,0,3)" -i
 ```

@@ -60,6 +60,14 @@ functions:
       - httpApi:
           path: /room/{position}
           method: PUT
+    environment:
+      TABLE_NAME: !Ref SkyCaveRoomsTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:UpdateItem
+        Resource: !GetAtt SkyCaveRoomsTable.Arn
 
   getRoomExits:
     handler: src/functions/getRoomExits.handler

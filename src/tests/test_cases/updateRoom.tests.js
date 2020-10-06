@@ -2,7 +2,7 @@ require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
 const { testRoomsPreCreated } = require('../manageTestData')
-//console.log = jest.fn()
+console.log = jest.fn()
 
 const validPosition = '(0,0,0)'
 const validRoom = {
