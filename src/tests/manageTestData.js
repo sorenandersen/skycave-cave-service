@@ -4,7 +4,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient()
 require('dotenv').config()
 
 const testRoomsPreCreated = [
-  // GET tests
+  // GET and PUT tests
   {
     id: '(1111,1111,1111)',
     creationTimeISO8601: '2020-10-02T18:37:30.771Z',
@@ -14,10 +14,9 @@ const testRoomsPreCreated = [
 ]
 
 const testRoomsCreatedByTests = [
-  // POSTS tests
+  // POST tests
   {
     id: '(1111,1111,2222)',
-    creationTimeISO8601: '2020-10-02T18:37:30.771Z',
     creatorId: '100',
     description: `Room created by test`,
   },
