@@ -5,20 +5,33 @@ const { testRoomsPreCreated } = require('../manageTestData')
 console.log = jest.fn()
 
 describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
-  test(`A valid position of an existing room should return exits for the room`, async () => {
+  test(`A valid position of an existing room should return exits for the room (1)`, async () => {
     // Arrange
-    // Arrange
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsPreCreated[1]
     const position = testRoom.id
     // Act
     const response = await invokeGetRoomExits(position)
     // Assert
     expect(response.statusCode).toEqual(200)
+    expect(response.body).toHaveLength(1)
+    expect(response.body).toContain('NORTH')
+  })
 
-    // TODO more asserts
-    // expect(response.body).toHaveLength(2)
-    // expect(response.body).toContain('NORTH')
-    // expect(response.body).toContain('WEST')
+  test(`A valid position of an existing room should return exits for the room (2)`, async () => {
+    // Arrange
+    const testRoom = testRoomsPreCreated[3]
+    const position = testRoom.id
+    // Act
+    const response = await invokeGetRoomExits(position)
+    // Assert
+    expect(response.statusCode).toEqual(200)
+    expect(response.body).toHaveLength(6)
+    expect(response.body).toContain('NORTH')
+    expect(response.body).toContain('SOUTH')
+    expect(response.body).toContain('EAST')
+    expect(response.body).toContain('WEST')
+    expect(response.body).toContain('UP')
+    expect(response.body).toContain('DOWN')
   })
 
   test(`A valid position of a non-existing room should return 404`, async () => {
@@ -39,8 +52,6 @@ describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
     expect(response.statusCode).toEqual(400)
   })
 })
-
-// TODO more tests
 
 const invokeGetRoomExits = async (position) => {
   switch (TEST_MODE) {

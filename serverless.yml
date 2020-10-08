@@ -79,7 +79,9 @@ functions:
       TABLE_NAME: !Ref SkyCaveRoomsTable
     iamRoleStatements:
       - Effect: Allow
-        Action: dynamodb:GetItem
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:BatchGetItem
         Resource: !GetAtt SkyCaveRoomsTable.Arn
 
 resources:
