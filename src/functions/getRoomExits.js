@@ -54,12 +54,14 @@ const handler = async (event, context) => {
       })
       .promise()
 
-    // Get all adacent room id's (by mapping the returned DynamoDB responses)
-    // and test each room id against the adjacentPositions object
-    // to determine the direction as seen from the passed-in position.
+    // Get all adacent room id's (by mapping returned DynamoDB responses)
     const adjacentRoomIds = result.Responses[
       Object.keys(result.Responses)[0]
     ].map((room) => room.id)
+    // Test if adjacent positions exist in the result set.
+    // Testing for each possible direction is a little cumbersome (we could just
+    // iterate the result set) but this is an easy way to ensure that returned
+    // exits are sorted as desired: North, south, east, west, up, down.
     if (adjacentRoomIds.includes(adjacentPositions.north.id))
       exits.push('NORTH')
     if (adjacentRoomIds.includes(adjacentPositions.south.id))

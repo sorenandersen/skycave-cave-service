@@ -5,9 +5,20 @@ const { testRoomsPreCreated } = require('../manageTestData')
 console.log = jest.fn()
 
 describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
-  test(`A valid position of an existing room should return exits for the room (1)`, async () => {
+  test(`A valid position of an existing room should return exits for the room (1: No exits)`, async () => {
     // Arrange
     const testRoom = testRoomsPreCreated[1]
+    const position = testRoom.id
+    // Act
+    const response = await invokeGetRoomExits(position)
+    // Assert
+    expect(response.statusCode).toEqual(200)
+    expect(response.body).toHaveLength(0)
+  })
+
+  test(`A valid position of an existing room should return exits for the room (2: Single exit)`, async () => {
+    // Arrange
+    const testRoom = testRoomsPreCreated[2]
     const position = testRoom.id
     // Act
     const response = await invokeGetRoomExits(position)
@@ -17,9 +28,9 @@ describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
     expect(response.body).toContain('NORTH')
   })
 
-  test(`A valid position of an existing room should return exits for the room (2)`, async () => {
+  test(`A valid position of an existing room should return exits for the room (3: All exits)`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[3]
+    const testRoom = testRoomsPreCreated[4]
     const position = testRoom.id
     // Act
     const response = await invokeGetRoomExits(position)
