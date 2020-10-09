@@ -4,7 +4,7 @@ const { TEST_MODE } = process.env
 const { testRoomsPreCreated } = require('../manageTestData')
 console.log = jest.fn()
 
-describe.skip(`When invoking the GET /room endpoint`, () => {
+describe(`When invoking the GET /room endpoint`, () => {
   test(`A valid position of an existing room should return the room`, async () => {
     // Arrange
     const testRoom = testRoomsPreCreated[0]

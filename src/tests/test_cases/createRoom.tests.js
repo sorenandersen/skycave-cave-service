@@ -6,7 +6,7 @@ console.log = jest.fn()
 
 // Test happy path
 // *************************************************
-describe.skip(`When invoking the POST /room endpoint, with a valid room record`, () => {
+describe(`When invoking the POST /room endpoint, with a valid room record`, () => {
   test(`It should create a room`, async () => {
     // Arrange
     const testRoom = testRoomsCreatedByTests[0]
@@ -20,7 +20,7 @@ describe.skip(`When invoking the POST /room endpoint, with a valid room record`,
 
 // Test with invalid or missing data
 // *************************************************
-describe.skip(`When invoking the POST /room endpoint, with invalid data`, () => {
+describe(`When invoking the POST /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not create, but return 400 (1)`, async () => {
     // Arrange
     const position = null
@@ -80,7 +80,7 @@ describe.skip(`When invoking the POST /room endpoint, with invalid data`, () => 
 
 // Test with duplicate position
 // *************************************************
-describe.skip(`When invoking the POST /room endpoint, for a room position that already exists`, () => {
+describe(`When invoking the POST /room endpoint, for a room position that already exists`, () => {
   test(`It should return 409`, async () => {
     // Arrange: Attempt to create the same room as done previously in tests (see statusCode 201)
     const testRoom = testRoomsCreatedByTests[0]
