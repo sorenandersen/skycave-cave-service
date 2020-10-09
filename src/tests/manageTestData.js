@@ -90,21 +90,22 @@ const requestItems = (requests) => ({
   },
 })
 
-const insertTestData = () => {
+const insertTestData = async () => {
   const putRequests = testRoomsPreCreated.map((x) => ({
     PutRequest: {
       Item: x,
     },
   }))
 
-  dynamodb
-    .batchWrite(requestItems(putRequests))
-    .promise()
-    .then(() => console.log('Test data successfully deployed.'))
-    .catch((err) => console.error(err))
+  try {
+    await dynamodb.batchWrite(requestItems(putRequests)).promise()
+    console.log('Test data successfully deployed.')
+  } catch (error) {
+    console.error(error)
+  }
 }
 
-const deleteTestData = () => {
+const deleteTestData = async () => {
   const rooms = testRoomsPreCreated.concat(testRoomsCreatedByTests)
   const deleteRequests = rooms.map((x) => ({
     DeleteRequest: {
@@ -112,11 +113,12 @@ const deleteTestData = () => {
     },
   }))
 
-  dynamodb
-    .batchWrite(requestItems(deleteRequests))
-    .promise()
-    .then(() => console.log('Test data successfully deleted.'))
-    .catch((err) => console.error(err))
+  try {
+    await dynamodb.batchWrite(requestItems(deleteRequests)).promise()
+    console.log('Test data successfully deleted.')
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 module.exports = {

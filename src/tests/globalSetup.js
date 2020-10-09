@@ -4,5 +4,5 @@ const { insertTestData } = require('./manageTestData')
 // Global setup module that is triggered once before all test suites.
 // https://jestjs.io/docs/en/configuration#globalsetup-string
 module.exports = async () => {
-  insertTestData()
+  await insertTestData()
 }
