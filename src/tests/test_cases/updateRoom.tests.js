@@ -1,7 +1,7 @@
 require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
-const { testRoomsPreCreated } = require('../manageTestData')
+const { testRoomsUpdateRoom } = require('../manageTestData')
 console.log = jest.fn()
 
 const validPosition = '(0,0,0)'
@@ -15,7 +15,7 @@ const validRoom = {
 describe(`When invoking the PUT /room endpoint, with a valid room record`, () => {
   test(`Room should be successfully updated`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     const position = testRoom.id
     const updatedRoom = {
       creatorId: testRoom.creatorId,
@@ -34,7 +34,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not update, but return 400 (1)`, async () => {
     // Arrange
     const position = null
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     // Act
     const response = await invokeUpdateRoom(position, testRoom)
     // Assert
@@ -44,7 +44,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not update, but return 400 (2)`, async () => {
     // Arrange
     const position = ''
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     // Act
     const response = await invokeUpdateRoom(position, testRoom)
     // Assert
@@ -54,7 +54,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
   test(`Invalid position format should not update, but return 400 (3)`, async () => {
     // Arrange
     const position = '(0,0,)'
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     // Act
     const response = await invokeUpdateRoom(position, testRoom)
     // Assert
@@ -63,7 +63,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
 
   test(`Missing required field 'creatorId' should not update, but return 400`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     const position = testRoom.id
     const invalidRoom = {
       description: 'Updated room description',
@@ -76,7 +76,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
 
   test(`Missing required field 'description' should not update, but return 400`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     const position = testRoom.id
     const invalidRoom = {
       creatorId: '100',
@@ -93,7 +93,7 @@ describe(`When invoking the PUT /room endpoint, with invalid data`, () => {
 describe(`When invoking the PUT /room endpoint, for a room created by somebody else`, () => {
   test(`It should not update the room, but return 403`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     const position = testRoom.id
     const updatedRoom = {
       creatorId: '4324231423412',
@@ -111,7 +111,7 @@ describe(`When invoking the PUT /room endpoint, for a room created by somebody e
 describe(`When invoking the PUT /room endpoint, for a room position that does not exist`, () => {
   test(`It should return 404`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[0]
+    const testRoom = testRoomsUpdateRoom[0]
     const position = '(4324231423412,4324231423412,4324231423412)'
     const updatedRoom = {
       creatorId: testRoom.creatorId,

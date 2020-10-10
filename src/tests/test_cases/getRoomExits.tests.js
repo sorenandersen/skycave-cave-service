@@ -1,13 +1,13 @@
 require('../init')
 const { viaHandler, viaHttp } = require('../invokers')
 const { TEST_MODE } = process.env
-const { testRoomsPreCreated } = require('../manageTestData')
+const { testRoomsGetRoomExits } = require('../manageTestData')
 console.log = jest.fn()
 
 describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
   test(`A valid position of an existing room should return exits for the room (1: No exits)`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[1]
+    const testRoom = testRoomsGetRoomExits[0]
     const position = testRoom.id
     // Act
     const response = await invokeGetRoomExits(position)
@@ -18,7 +18,7 @@ describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
 
   test(`A valid position of an existing room should return exits for the room (2: Single exit)`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[2]
+    const testRoom = testRoomsGetRoomExits[1]
     const position = testRoom.id
     // Act
     const response = await invokeGetRoomExits(position)
@@ -30,7 +30,7 @@ describe(`When invoking the GET /room/{position}/exits endpoint`, () => {
 
   test(`A valid position of an existing room should return exits for the room (3: All exits)`, async () => {
     // Arrange
-    const testRoom = testRoomsPreCreated[4]
+    const testRoom = testRoomsGetRoomExits[3]
     const position = testRoom.id
     // Act
     const response = await invokeGetRoomExits(position)

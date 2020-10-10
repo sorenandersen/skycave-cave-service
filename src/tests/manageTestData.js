@@ -3,15 +3,36 @@ AWS.config.region = 'us-east-1'
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 require('dotenv').config()
 
-const testRoomsPreCreated = [
-  // GET and PUT room tests
+const testRoomsCreateRoom = [
+  // POST room tests
   {
     id: '(1111,1111,1111)',
+    creatorId: '100',
+    description: `Room created by test`,
+  },
+]
+
+const testRoomsUpdateRoom = [
+  // PUT room tests
+  {
+    id: '(1111,1111,2222)',
+    creationTimeISO8601: '2020-10-10T17:08:13.38Z',
+    creatorId: '100',
+    description: `Room created by test`,
+  },
+]
+
+const testRoomsGetRoom = [
+  // GET room tests
+  {
+    id: '(1111,1111,3333)',
     creationTimeISO8601: '2020-10-02T18:37:30.771Z',
     creatorId: '100',
     description: `Room created by test`,
   },
+]
 
+const testRoomsGetRoomExits = [
   // GET room exits tests
   {
     id: '(2000,2000,1000)',
@@ -75,15 +96,6 @@ const testRoomsPreCreated = [
   },
 ]
 
-const testRoomsCreatedByTests = [
-  // POST tests
-  {
-    id: '(1111,1111,2222)',
-    creatorId: '100',
-    description: `Room created by test`,
-  },
-]
-
 const requestItems = (requests) => ({
   RequestItems: {
     [process.env.TABLE_NAME]: requests,
@@ -91,7 +103,12 @@ const requestItems = (requests) => ({
 })
 
 const insertTestData = async () => {
-  const putRequests = testRoomsPreCreated.map((x) => ({
+  const testRooms = []
+    .concat(testRoomsUpdateRoom)
+    .concat(testRoomsGetRoom)
+    .concat(testRoomsGetRoomExits)
+
+  const putRequests = testRooms.map((x) => ({
     PutRequest: {
       Item: x,
     },
@@ -106,8 +123,13 @@ const insertTestData = async () => {
 }
 
 const deleteTestData = async () => {
-  const rooms = testRoomsPreCreated.concat(testRoomsCreatedByTests)
-  const deleteRequests = rooms.map((x) => ({
+  const testRooms = []
+    .concat(testRoomsCreateRoom)
+    .concat(testRoomsUpdateRoom)
+    .concat(testRoomsGetRoom)
+    .concat(testRoomsGetRoomExits)
+
+  const deleteRequests = testRooms.map((x) => ({
     DeleteRequest: {
       Key: { id: x.id },
     },
@@ -122,8 +144,10 @@ const deleteTestData = async () => {
 }
 
 module.exports = {
-  testRoomsPreCreated,
-  testRoomsCreatedByTests,
+  testRoomsCreateRoom,
+  testRoomsUpdateRoom,
+  testRoomsGetRoom,
+  testRoomsGetRoomExits,
   insertTestData,
   deleteTestData,
 }
