@@ -82,7 +82,7 @@ describe(`When invoking the POST /room endpoint, with invalid data`, () => {
 // *************************************************
 describe(`When invoking the POST /room endpoint, for a room position that already exists`, () => {
   test(`It should return 409`, async () => {
-    // Arrange: Attempt to create the same room as done previously in tests (see statusCode 201)
+    // Arrange: Attempt to create room on position already in use
     const testRoom = testRoomsCreateRoom[0]
     const position = testRoom.id
     // Act
